@@ -3,13 +3,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent } from "react";
 
+import { CrmDashboardView } from "@/components/crm-dashboard-view";
 import {
-  CrmDashboardView,
   type ClientCardItem,
   type ClientFormState,
   type DealFormState,
   type StatusFilter
-} from "@/components/crm-dashboard-view";
+} from "@/components/crm-dashboard/types";
 import {
   createClient,
   createDeal,
