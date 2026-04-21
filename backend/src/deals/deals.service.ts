@@ -1,6 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 
+import { assertFound } from "../common/prisma/prisma.errors";
+import { DEAL_WITH_CLIENT_INCLUDE } from "../common/prisma/prisma.constants";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateDealDto } from "./dto/create-deal.dto";
 import { ListDealsQueryDto } from "./dto/list-deals-query.dto";
@@ -23,9 +25,7 @@ export class DealsService {
 
     return this.prisma.deal.findMany({
       where,
-      include: {
-        client: true
-      },
+      include: DEAL_WITH_CLIENT_INCLUDE,
       orderBy: {
         createdAt: "desc"
       }
@@ -35,28 +35,14 @@ export class DealsService {
   async findOne(id: string) {
     const deal = await this.prisma.deal.findUnique({
       where: { id },
-      include: {
-        client: true
-      }
+      include: DEAL_WITH_CLIENT_INCLUDE
     });
 
-    if (!deal) {
-      throw new NotFoundException(`Deal ${id} not found`);
-    }
-
-    return deal;
+    return assertFound(deal, "Deal", id);
   }
 
   async create(createDealDto: CreateDealDto) {
-    const client = await this.prisma.client.findUnique({
-      where: {
-        id: createDealDto.clientId
-      }
-    });
-
-    if (!client) {
-      throw new NotFoundException(`Client ${createDealDto.clientId} not found`);
-    }
+    await this.ensureClientExists(createDealDto.clientId);
 
     return this.prisma.deal.create({
       data: {
@@ -69,9 +55,7 @@ export class DealsService {
           }
         }
       },
-      include: {
-        client: true
-      }
+      include: DEAL_WITH_CLIENT_INCLUDE
     });
   }
 
@@ -79,15 +63,7 @@ export class DealsService {
     await this.findOne(id);
 
     if (updateDealDto.clientId) {
-      const client = await this.prisma.client.findUnique({
-        where: {
-          id: updateDealDto.clientId
-        }
-      });
-
-      if (!client) {
-        throw new NotFoundException(`Client ${updateDealDto.clientId} not found`);
-      }
+      await this.ensureClientExists(updateDealDto.clientId);
     }
 
     const { clientId, ...data } = updateDealDto;
@@ -106,9 +82,7 @@ export class DealsService {
             }
           : {})
       },
-      include: {
-        client: true
-      }
+      include: DEAL_WITH_CLIENT_INCLUDE
     });
   }
 
@@ -118,5 +92,15 @@ export class DealsService {
     return this.prisma.deal.delete({
       where: { id }
     });
+  }
+
+  private async ensureClientExists(clientId: string) {
+    const client = await this.prisma.client.findUnique({
+      where: {
+        id: clientId
+      }
+    });
+
+    return assertFound(client, "Client", clientId);
   }
 }

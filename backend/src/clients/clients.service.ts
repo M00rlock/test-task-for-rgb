@@ -1,6 +1,11 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
+import { Injectable } from "@nestjs/common";
 
+import { buildPaginationMeta } from "../common/pagination/pagination";
+import {
+  CLIENT_LIST_ORDER_BY_CREATED_AT_DESC,
+  CLIENT_WITH_DEALS_INCLUDE
+} from "../common/prisma/prisma.constants";
+import { assertFound, mapUniqueConstraintError } from "../common/prisma/prisma.errors";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateClientDto } from "./dto/create-client.dto";
 import { ListClientsQueryDto } from "./dto/list-clients-query.dto";
@@ -17,41 +22,24 @@ export class ClientsService {
       this.prisma.client.findMany({
         skip,
         take: limit,
-        orderBy: {
-          createdAt: "desc"
-        }
+        orderBy: CLIENT_LIST_ORDER_BY_CREATED_AT_DESC
       }),
       this.prisma.client.count()
     ]);
 
     return {
       data,
-      meta: {
-        page,
-        limit,
-        total,
-        totalPages: Math.max(1, Math.ceil(total / limit))
-      }
+      meta: buildPaginationMeta(page, limit, total)
     };
   }
 
   async findOne(id: string) {
     const client = await this.prisma.client.findUnique({
       where: { id },
-      include: {
-        deals: {
-          orderBy: {
-            createdAt: "desc"
-          }
-        }
-      }
+      include: CLIENT_WITH_DEALS_INCLUDE
     });
 
-    if (!client) {
-      throw new NotFoundException(`Client ${id} not found`);
-    }
-
-    return client;
+    return assertFound(client, "Client", id);
   }
 
   async create(createClientDto: CreateClientDto) {
@@ -60,11 +48,7 @@ export class ClientsService {
         data: createClientDto
       });
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new ConflictException("Client with this email already exists");
-      }
-
-      throw error;
+      mapUniqueConstraintError(error, "Client with this email already exists");
     }
   }
 
@@ -77,11 +61,7 @@ export class ClientsService {
         data: updateClientDto
       });
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
-        throw new ConflictException("Client with this email already exists");
-      }
-
-      throw error;
+      mapUniqueConstraintError(error, "Client with this email already exists");
     }
   }
 
