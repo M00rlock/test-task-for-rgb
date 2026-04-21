@@ -1,4 +1,4 @@
-import { CrmDashboardViewProps } from "./crm-dashboard/types";
+import type { CrmDashboardViewProps } from "./crm-dashboard/types";
 import { ClientsSection } from "./crm-dashboard/clients-section";
 import { DealFormCard } from "./crm-dashboard/deal-form-card";
 import { DealsSection } from "./crm-dashboard/deals-section";

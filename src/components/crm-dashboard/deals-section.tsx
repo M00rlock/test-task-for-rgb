@@ -1,10 +1,9 @@
-import type { Dispatch, SetStateAction } from "react";
 import { BriefcaseBusiness } from "lucide-react";
 
 import { RecordActions } from "@/components/crm-actions";
 
 import { EmptyState, Field, FieldSelect, SectionTitle, formatCurrency, formatDate, statusMeta } from "./shared";
-import { DEAL_STATUSES, type ClientSummary, type DealWithClient } from "@/lib/crm-api";
+import { DEAL_STATUSES } from "@/lib/crm-api";
 import type { CrmDashboardViewProps, StatusFilter } from "./types";
 
 type DealsSectionProps = CrmDashboardViewProps["deals"];

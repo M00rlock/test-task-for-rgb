@@ -3,7 +3,7 @@ import { Users } from "lucide-react";
 import { RecordActions } from "@/components/crm-actions";
 import { Button } from "@/components/ui/button";
 
-import type { CrmDashboardViewProps, ClientCardItem } from "./types";
+import type { CrmDashboardViewProps } from "./types";
 import { EmptyState, SectionTitle, formatCurrency, formatDate, statusCountLabel } from "./shared";
 
 type ClientsSectionProps = CrmDashboardViewProps["clients"];

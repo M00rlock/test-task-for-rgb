@@ -1,6 +1,5 @@
 import type { ComponentType, ReactNode, InputHTMLAttributes, SelectHTMLAttributes } from "react";
 
-import { Button } from "@/components/ui/button";
 import type { DealStatus } from "@/lib/crm-api";
 
 export function formatCurrency(value: number) {
@@ -153,12 +152,3 @@ export function EmptyState({
   );
 }
 
-export function ActionBar({
-  children
-}: {
-  children: ReactNode;
-}) {
-  return <div className="flex flex-wrap gap-3 pt-2">{children}</div>;
-}
-
-export { Button };
