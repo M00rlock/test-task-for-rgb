@@ -1,62 +1,147 @@
 # RGB Test Project
 
-Frontend:
-- Next.js
-- TypeScript
-- Tailwind CSS
-- shadcn/ui-style components
-
-Backend:
-- NestJS
-- Prisma
-- PostgreSQL
-- Swagger UI available at `http://127.0.0.1:3001/docs`
-
-## Run locally
+A CRM MVP with a full-stack setup.
 
 Frontend:
-```bash
-npm install
-npm run dev
-```
+- Next.js 15, TypeScript, Tailwind CSS, shadcn/ui-style components
 
 Backend:
+- NestJS, Prisma, PostgreSQL
+
+## Requirements
+
+- Node.js 20+
+- Docker (recommended) or Homebrew on macOS
+
+## Quickstart
+
+The fastest way to run everything — one command starts the database, runs migrations, seeds data, and launches both frontend and backend:
+
 ```bash
-cd backend
 npm install
-cp .env.example .env
-npm run dev
+cd backend && npm install && cd ..
+npm run dev:all
 ```
 
-Open Swagger UI in the browser:
-```bash
-http://127.0.0.1:3001/docs
-```
+- Frontend: http://localhost:3000
+- Backend API: http://127.0.0.1:3001
+- Swagger UI: http://127.0.0.1:3001/docs *(development only)*
 
-PostgreSQL:
+## Manual Setup
+
+### 1. PostgreSQL
+
+With Docker:
 ```bash
 docker compose up -d postgres
 ```
 
-If Docker is not installed, the dev setup will fall back to Homebrew PostgreSQL on macOS.
+Without Docker (macOS only, requires Homebrew):
+```bash
+npm run db:up
+```
 
-## Full Stack Dev
+### 2. Backend
 
-Run everything together:
+```bash
+cd backend
+npm install
+cp .env.example .env
+cd ..
+npm run db:migrate
+npm run db:seed
+npm run dev:backend
+```
+
+### 3. Frontend
+
+In a separate terminal from the project root:
+```bash
+npm install
+npm run dev:web
+```
+
+## Environment Variables
+
+### Backend (`backend/.env`)
+
+| Variable       | Default                                                                 | Description                        |
+|----------------|-------------------------------------------------------------------------|------------------------------------|
+| `PORT`         | `3001`                                                                  | Backend port                       |
+| `DATABASE_URL` | `postgresql://postgres:postgres@localhost:5432/rgb_test_project?schema=public` | PostgreSQL connection string |
+| `CORS_ORIGIN`  | `http://localhost:3000`                                                 | Allowed frontend origin            |
+
+### Frontend (`.env.local`)
+
+| Variable               | Default                  | Description       |
+|------------------------|--------------------------|-------------------|
+| `NEXT_PUBLIC_API_URL`  | `http://127.0.0.1:3001`  | Backend API URL   |
+
+## Useful Commands
+
+```bash
+npm run dev:all        # Start everything (DB + frontend + backend)
+npm run dev:stop       # Stop all dev processes
+npm run dev:web        # Frontend only
+npm run dev:backend    # Backend only
+npm run db:up          # Start PostgreSQL
+npm run db:migrate     # Run Prisma migrations
+npm run db:seed        # Seed the database
+npm run build          # Build frontend for production
+npm run build:backend  # Build backend for production
+npm run lint           # Lint frontend
+```
+
+## Development vs Production
+
+### Development
+
+Hot-reload for both frontend and backend, Swagger UI enabled, no build step required:
+
 ```bash
 npm run dev:all
 ```
 
-Stop the full stack:
-```bash
-npm run dev:stop
+### Production
+
+**1. Set environment variables**
+
+`backend/.env`:
+```env
+NODE_ENV=production
+PORT=3001
+DATABASE_URL=postgresql://user:password@host:5432/rgb_test_project?schema=public
+CORS_ORIGIN=https://your-frontend-domain.com
 ```
 
-Useful commands:
-```bash
-npm run db:up
-npm run db:migrate
-npm run db:seed
-npm run dev:web
-npm run dev:backend
+`.env.local`:
+```env
+NEXT_PUBLIC_API_URL=https://your-backend-domain.com
 ```
+
+**2. Build both apps**
+
+```bash
+npm run build
+npm run build:backend
+```
+
+**3. Run migrations**
+
+```bash
+npm run db:migrate
+```
+
+**4. Start both apps**
+
+In separate processes (or use a process manager like PM2):
+```bash
+npm run start          # Frontend on port 3000
+npm run start:backend  # Backend on port 3001
+```
+
+**Key differences in production mode:**
+- Swagger UI is disabled
+- Next.js runs the optimised build instead of the dev server
+- `CORS_ORIGIN` must be set to your actual frontend domain
+- `NODE_ENV=production` must be set in `backend/.env`

@@ -15,7 +15,9 @@
     "dev:all": "npm run db:setup && concurrently -n web,api -c cyan,magenta \"npm run dev:web\" \"npm run dev:backend\"",
     "dev:stop": "node scripts/stop-dev.mjs",
     "build": "next build",
+    "build:backend": "npm run build --prefix backend",
     "start": "next start",
+    "start:backend": "npm run start --prefix backend",
     "lint": "next lint"
   },
   "dependencies": {
