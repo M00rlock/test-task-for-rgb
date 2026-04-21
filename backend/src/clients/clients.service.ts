@@ -3,13 +3,14 @@ import { Prisma } from "@prisma/client";
 
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateClientDto } from "./dto/create-client.dto";
+import { ListClientsQueryDto } from "./dto/list-clients-query.dto";
 import { UpdateClientDto } from "./dto/update-client.dto";
 
 @Injectable()
 export class ClientsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll({ page, limit }: { page: number; limit: number }) {
+  async findAll({ page, limit }: ListClientsQueryDto) {
     const skip = (page - 1) * limit;
 
     const [data, total] = await Promise.all([

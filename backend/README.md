@@ -38,6 +38,7 @@ NestJS + Prisma + PostgreSQL starter for RGB Test Project.
    ```bash
    http://127.0.0.1:3001/docs
    ```
+   Swagger now documents the response models used by the CRM UI, including paginated clients and deals with nested client data.
 
 ## API
 
@@ -47,9 +48,12 @@ Clients:
 - `GET /clients/:id`
 - `PATCH /clients/:id`
 - `DELETE /clients/:id`
+  - `GET /clients` returns `{ data, meta }`
+  - `GET /clients/:id` returns the client with its deals
 
 Deals:
 - `POST /deals`
 - `GET /deals?status=NEW&clientId=<uuid>`
 - `PATCH /deals/:id`
 - `DELETE /deals/:id`
+  - `GET /deals` returns deals with nested client data

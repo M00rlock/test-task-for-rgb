@@ -22,8 +22,8 @@ async function bootstrap() {
   );
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle("RGB Test Project API")
-    .setDescription("NestJS + Prisma + PostgreSQL backend")
+    .setTitle("RGB CRM API")
+    .setDescription("Backend for the CRM MVP built with NestJS, Prisma, and PostgreSQL")
     .setVersion("1.0")
     .build();
 

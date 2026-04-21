@@ -1,22 +1,20 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { DealStatus, Prisma } from "@prisma/client";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateDealDto } from "./dto/create-deal.dto";
+import { ListDealsQueryDto } from "./dto/list-deals-query.dto";
 import { UpdateDealDto } from "./dto/update-deal.dto";
 
 @Injectable()
 export class DealsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  findAll({ status, clientId }: { status?: string; clientId?: string }) {
+  findAll({ status, clientId }: ListDealsQueryDto) {
     const where: Prisma.DealWhereInput = {};
 
     if (status) {
-      if (!Object.values(DealStatus).includes(status as DealStatus)) {
-        throw new BadRequestException(`Invalid deal status: ${status}`);
-      }
-      where.status = status as DealStatus;
+      where.status = status;
     }
 
     if (clientId) {

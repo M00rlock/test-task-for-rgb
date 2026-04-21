@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { DealStatus } from "@prisma/client";
-import { IsEnum, IsOptional, IsPositive, IsString, IsUUID } from "class-validator";
+import { IsEnum, IsNumber, IsOptional, IsPositive, IsString, IsUUID } from "class-validator";
 
 export class UpdateDealDto {
   @ApiPropertyOptional({ example: "Website redesign", description: "Deal title" })
@@ -12,6 +12,7 @@ export class UpdateDealDto {
   @ApiPropertyOptional({ example: 2500, description: "Deal amount, must be greater than 0" })
   @Type(() => Number)
   @IsOptional()
+  @IsNumber()
   @IsPositive()
   amount?: number;
 
