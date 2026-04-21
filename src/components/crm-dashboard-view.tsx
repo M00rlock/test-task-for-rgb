@@ -3,7 +3,6 @@ import { ClientsSection } from "./crm-dashboard/clients-section";
 import { DealFormCard } from "./crm-dashboard/deal-form-card";
 import { DealsSection } from "./crm-dashboard/deals-section";
 import { DashboardHero } from "./crm-dashboard/hero-section";
-import { InsightCard } from "./crm-dashboard/insight-card";
 import { ClientFormCard } from "./crm-dashboard/client-form-card";
 import { WorkflowCard } from "./crm-dashboard/workflow-card";
 
@@ -49,7 +48,6 @@ export function CrmDashboardView({ error, hero, clients, deals, forms }: CrmDash
               onSubmit={forms.onSubmitDeal}
               onCancel={forms.onCancelDeal}
             />
-            <InsightCard />
           </aside>
         </section>
       </div>
