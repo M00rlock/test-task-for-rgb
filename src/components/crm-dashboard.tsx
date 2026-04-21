@@ -41,7 +41,7 @@ import {
 } from "@/lib/crm-api";
 
 const CLIENT_PAGE_SIZE = 6;
-const SELECT_PAGE_SIZE = 200;
+const SELECT_PAGE_SIZE = 100;
 
 type ClientFormState = {
   name: string;

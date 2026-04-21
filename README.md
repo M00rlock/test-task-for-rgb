@@ -10,6 +10,7 @@ Backend:
 - NestJS
 - Prisma
 - PostgreSQL
+- Swagger UI available at `http://127.0.0.1:3001/docs`
 
 ## Run locally
 
@@ -25,6 +26,11 @@ cd backend
 npm install
 cp .env.example .env
 npm run dev
+```
+
+Open Swagger UI in the browser:
+```bash
+http://127.0.0.1:3001/docs
 ```
 
 PostgreSQL:
