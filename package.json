@@ -4,6 +4,15 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "next dev",
+    "dev:web": "next dev",
+    "dev:backend": "npm run dev --prefix backend",
+    "db:up": "node scripts/ensure-postgres.mjs",
+    "db:down": "node scripts/stop-postgres.mjs",
+    "db:migrate": "npm run prisma:migrate:deploy --prefix backend",
+    "db:seed": "npm run prisma:seed --prefix backend",
+    "db:setup": "node scripts/ensure-backend-env.mjs && npm run db:up && node scripts/wait-for-port.mjs 127.0.0.1 5432 60000 && npm run db:migrate && npm run db:seed",
+    "dev:all": "npm run db:setup && concurrently -n web,api -c cyan,magenta \"npm run dev:web\" \"npm run dev:backend\"",
+    "dev:stop": "node scripts/stop-dev.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -23,6 +32,7 @@
     "@types/react": "^19.0.15",
     "@types/react-dom": "^19.0.10",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^9.1.2",
     "eslint": "^9.26.0",
     "eslint-config-next": "^15.3.0",
     "postcss": "^8.5.4",

@@ -7,11 +7,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
+enum DealStatus {
+  NEW
+  IN_PROGRESS
+  WON
+  LOST
+}
+
+model Client {
+  id        String   @id @default(uuid())
+  name      String
   email     String   @unique
-  name      String?
+  phone     String?
+  deals     Deal[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+model Deal {
+  id        String     @id @default(uuid())
+  title     String
+  amount    Float
+  status    DealStatus @default(NEW)
+  clientId  String
+  client    Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([clientId])
+}

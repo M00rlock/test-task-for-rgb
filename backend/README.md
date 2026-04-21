@@ -8,6 +8,7 @@ NestJS + Prisma + PostgreSQL starter for RGB Test Project.
    ```bash
    docker compose up -d postgres
    ```
+   If Docker is unavailable on macOS, the root `npm run dev:all` flow will fall back to Homebrew PostgreSQL automatically.
 2. Install dependencies:
    ```bash
    npm install
@@ -16,12 +17,39 @@ NestJS + Prisma + PostgreSQL starter for RGB Test Project.
    ```bash
    cp .env.example .env
    ```
-4. Generate Prisma client:
+4. Run migrations:
+   ```bash
+   npm run prisma:migrate:deploy
+   ```
+5. Seed demo data:
+   ```bash
+   npm run prisma:seed
+   ```
+6. Generate Prisma client:
    ```bash
    npm run prisma:generate
    ```
-5. Start the API:
+7. Start the API:
    ```bash
    npm run dev
    ```
 
+8. Open Swagger UI:
+   ```bash
+   http://127.0.0.1:3001/docs
+   ```
+
+## API
+
+Clients:
+- `POST /clients`
+- `GET /clients?page=1&limit=10`
+- `GET /clients/:id`
+- `PATCH /clients/:id`
+- `DELETE /clients/:id`
+
+Deals:
+- `POST /deals`
+- `GET /deals?status=NEW&clientId=<uuid>`
+- `PATCH /deals/:id`
+- `DELETE /deals/:id`
