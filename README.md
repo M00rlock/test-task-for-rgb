@@ -90,6 +90,10 @@ npm run db:seed        # Seed the database
 npm run build          # Build frontend for production
 npm run build:backend  # Build backend for production
 npm run lint           # Lint frontend
+npm run test:web       # Frontend unit tests
+npm run test:backend   # Backend unit tests
+npm run test:web:cov   # Frontend tests with coverage
+npm run test:backend:cov # Backend tests with coverage
 ```
 
 ## Development vs Production
