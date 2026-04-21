@@ -3,8 +3,10 @@ import { Users } from "lucide-react";
 import { RecordActions } from "@/components/crm-actions";
 import { Button } from "@/components/ui/button";
 
-import type { ClientCardItem } from "./types";
+import type { CrmDashboardViewProps, ClientCardItem } from "./types";
 import { EmptyState, SectionTitle, formatCurrency, formatDate, statusCountLabel } from "./shared";
+
+type ClientsSectionProps = CrmDashboardViewProps["clients"];
 
 export function ClientsSection({
   clientItems,
@@ -16,17 +18,7 @@ export function ClientsSection({
   onNextPage,
   onEditClient,
   onDeleteClient
-}: {
-  clientItems: ClientCardItem[];
-  clientPage: number;
-  totalPages: number;
-  isInitialLoading: boolean;
-  deletingClientId: string | null;
-  onPrevPage: () => void;
-  onNextPage: () => void;
-  onEditClient: (client: ClientCardItem) => void;
-  onDeleteClient: (client: ClientCardItem) => void;
-}) {
+}: ClientsSectionProps) {
   return (
     <div className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-[0_16px_50px_rgba(15,23,42,0.07)]">
       <div className="flex flex-wrap items-end justify-between gap-4">

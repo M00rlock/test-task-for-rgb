@@ -3,16 +3,21 @@ import "reflect-metadata";
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import helmet from "helmet";
 
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.use(helmet());
+
+  const allowedOrigin = process.env.CORS_ORIGIN ?? "http://localhost:3000";
   app.enableCors({
-    origin: true,
+    origin: allowedOrigin,
     credentials: true
   });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -21,14 +26,16 @@ async function bootstrap() {
     })
   );
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle("RGB CRM API")
-    .setDescription("Backend for the CRM MVP built with NestJS, Prisma, and PostgreSQL")
-    .setVersion("1.0")
-    .build();
+  if (process.env.NODE_ENV !== "production") {
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle("RGB CRM API")
+      .setDescription("Backend for the CRM MVP built with NestJS, Prisma, and PostgreSQL")
+      .setVersion("1.0")
+      .build();
 
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup("docs", app, document);
+    const document = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup("docs", app, document);
+  }
 
   const port = Number(process.env.PORT ?? 3001);
   const host = process.env.HOST ?? "127.0.0.1";

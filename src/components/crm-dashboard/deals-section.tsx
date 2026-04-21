@@ -5,7 +5,9 @@ import { RecordActions } from "@/components/crm-actions";
 
 import { EmptyState, Field, FieldSelect, SectionTitle, formatCurrency, formatDate, statusMeta } from "./shared";
 import { DEAL_STATUSES, type ClientSummary, type DealWithClient } from "@/lib/crm-api";
-import type { StatusFilter } from "./types";
+import type { CrmDashboardViewProps, StatusFilter } from "./types";
+
+type DealsSectionProps = CrmDashboardViewProps["deals"];
 
 export function DealsSection({
   visibleDeals,
@@ -17,17 +19,7 @@ export function DealsSection({
   deletingDealId,
   onEditDeal,
   onDeleteDeal
-}: {
-  visibleDeals: DealWithClient[];
-  statusFilter: StatusFilter;
-  setStatusFilter: Dispatch<SetStateAction<StatusFilter>>;
-  clientFilter: string;
-  setClientFilter: Dispatch<SetStateAction<string>>;
-  clientOptions: ClientSummary[];
-  deletingDealId: string | null;
-  onEditDeal: (deal: DealWithClient) => void;
-  onDeleteDeal: (deal: DealWithClient) => void;
-}) {
+}: DealsSectionProps) {
   return (
     <div className="rounded-[2rem] border border-slate-200/80 bg-white/90 p-6 shadow-[0_16px_50px_rgba(15,23,42,0.07)]">
       <div className="flex flex-wrap items-end justify-between gap-4">

@@ -1,5 +1,7 @@
 import { BriefcaseBusiness, Clock3, Filter, Target, Users } from "lucide-react";
 
+import { formatDate } from "./shared";
+
 export function WorkflowCard({ lastSyncedAt }: { lastSyncedAt: string | null }) {
   return (
     <aside className="rounded-[2rem] border border-slate-200/80 bg-white/85 p-7 shadow-[0_22px_70px_rgba(15,23,42,0.08)]">
@@ -46,7 +48,7 @@ export function WorkflowCard({ lastSyncedAt }: { lastSyncedAt: string | null }) 
           Last sync
         </div>
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          {lastSyncedAt ? new Intl.DateTimeFormat("uk-UA", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(lastSyncedAt)) : "Waiting for the first sync"}
+          {lastSyncedAt ? formatDate(lastSyncedAt) : "Waiting for the first sync"}
         </p>
       </div>
     </aside>

@@ -307,7 +307,7 @@ export function CrmDashboard() {
 
   const handleClientDelete = useCallback(
     async (client: ClientCardItem) => {
-      const confirmed = window.confirm(`Delete ${client.name}? This will remove all related deals.`);
+      const confirmed = window.confirm(`Delete "${client.name}"? This will remove all related deals.`);
       if (!confirmed) {
         return;
       }
@@ -338,7 +338,7 @@ export function CrmDashboard() {
 
   const handleDealDelete = useCallback(
     async (deal: DealWithClient) => {
-      const confirmed = window.confirm(`Delete deal "${deal.title}"?`);
+      const confirmed = window.confirm(`Delete deal "${deal.title}"? This action cannot be undone.`);
       if (!confirmed) {
         return;
       }

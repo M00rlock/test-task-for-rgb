@@ -1,8 +1,11 @@
 import { ArrowRight, BriefcaseBusiness, CheckCircle2, CircleDollarSign, Plus, RefreshCw, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import type { CrmDashboardViewProps } from "./types";
 
 import { formatCurrency, StatCard } from "./shared";
+
+type HeroProps = CrmDashboardViewProps["hero"];
 
 export function DashboardHero({
   clientPage,
@@ -16,19 +19,7 @@ export function DashboardHero({
   onRefresh,
   onFocusClientForm,
   onFocusDealForm
-}: {
-  clientPage: number;
-  totalPages: number;
-  totalClients: number;
-  totalDeals: number;
-  pipelineValue: number;
-  wonRevenue: number;
-  activeDeals: number;
-  isRefreshing: boolean;
-  onRefresh: () => void;
-  onFocusClientForm: () => void;
-  onFocusDealForm: () => void;
-}) {
+}: HeroProps) {
   return (
     <section className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white/85 p-7 shadow-[0_22px_70px_rgba(15,23,42,0.10)] backdrop-blur">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.14),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.12),transparent_28%)]" />
